@@ -6,6 +6,8 @@ import 'bubble_chart_painter.dart';
 class BubbleChart extends StatefulWidget {
   final List<String> names;
   final List<double> values;
+  final List<Color> colors;
+  final bool showValues;
   final Function(String)? onBubbleTap;
   final Color? positiveColor;
   final Color? negativeColor;
@@ -27,6 +29,8 @@ class BubbleChart extends StatefulWidget {
     super.key,
     required this.names,
     required this.values,
+    required this.colors,
+    required this.showValues,
     this.onBubbleTap,
     this.positiveColor,
     this.negativeColor,
@@ -71,8 +75,7 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void didUpdateWidget(BubbleChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.names != widget.names ||
-        oldWidget.values != widget.values) {
+    if (oldWidget.names != widget.names || oldWidget.values != widget.values) {
       if (screenSize != null) {
         _generateBubbles(screenSize!);
       }
@@ -179,22 +182,24 @@ class _BubbleChartState extends State<BubbleChart>
 
         if (bubble.position.dx - bubble.radius < 0) {
           bubble.velocity = Offset(
-              -bubble.velocity.dx * widget.collisionDamping, bubble.velocity.dy);
+              -bubble.velocity.dx * widget.collisionDamping,
+              bubble.velocity.dy);
           bubble.position = Offset(bubble.radius, bubble.position.dy);
         } else if (bubble.position.dx + bubble.radius > screenSize!.width) {
           bubble.velocity = Offset(
-              -bubble.velocity.dx * widget.collisionDamping, bubble.velocity.dy);
+              -bubble.velocity.dx * widget.collisionDamping,
+              bubble.velocity.dy);
           bubble.position =
               Offset(screenSize!.width - bubble.radius, bubble.position.dy);
         }
 
         if (bubble.position.dy - bubble.radius < 0) {
-          bubble.velocity = Offset(
-              bubble.velocity.dx, -bubble.velocity.dy * widget.collisionDamping);
+          bubble.velocity = Offset(bubble.velocity.dx,
+              -bubble.velocity.dy * widget.collisionDamping);
           bubble.position = Offset(bubble.position.dx, bubble.radius);
         } else if (bubble.position.dy + bubble.radius > screenSize!.height) {
-          bubble.velocity = Offset(
-              bubble.velocity.dx, -bubble.velocity.dy * widget.collisionDamping);
+          bubble.velocity = Offset(bubble.velocity.dx,
+              -bubble.velocity.dy * widget.collisionDamping);
           bubble.position =
               Offset(bubble.position.dx, screenSize!.height - bubble.radius);
         }
