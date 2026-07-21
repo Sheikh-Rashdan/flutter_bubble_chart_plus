@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_bubble_chart_plus.svg)](https://pub.dev/packages/flutter_bubble_chart_plus)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
+A fork that implements custom colors, option to hide values and text-wrapping of a beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
 
 ## Features
 
