@@ -63,12 +63,13 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 16),
-    )..addListener(() {
-        _updateBubbles();
-      });
+    _controller =
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 16),
+        )..addListener(() {
+          _updateBubbles();
+        });
     _controller.repeat();
   }
 
@@ -104,11 +105,13 @@ class _BubbleChartState extends State<BubbleChart>
       } else {
         final normalizedValue =
             (absValue - minAbsValue) / (maxAbsValue - minAbsValue);
-        radius = widget.minRadius +
+        radius =
+            widget.minRadius +
             (normalizedValue * (widget.maxRadius - widget.minRadius));
       }
 
-      final opacity = widget.minOpacity +
+      final opacity =
+          widget.minOpacity +
           (absValue / maxAbsValue * (widget.maxOpacity - widget.minOpacity))
               .clamp(0.0, widget.maxOpacity);
 
@@ -118,7 +121,7 @@ class _BubbleChartState extends State<BubbleChart>
           widget.negativeColor ?? Colors.red.withValues(alpha: opacity);
 
       final Color color;
-      if (widget.colors != null) {
+      if (widget.colors == null) {
         color = value > 0 ? positiveColor : negativeColor;
       } else {
         color = widget.colors![i];
@@ -127,17 +130,19 @@ class _BubbleChartState extends State<BubbleChart>
       final x = radius + random.nextDouble() * (size.width - radius * 2);
       final y = radius + random.nextDouble() * (size.height - radius * 2);
 
-      bubbles.add(BubbleData(
-        name: name,
-        value: value,
-        color: color,
-        position: Offset(x, y),
-        velocity: Offset(
-          (random.nextDouble() - 0.5) * 2.0,
-          (random.nextDouble() - 0.5) * 2.0,
+      bubbles.add(
+        BubbleData(
+          name: name,
+          value: value,
+          color: color,
+          position: Offset(x, y),
+          velocity: Offset(
+            (random.nextDouble() - 0.5) * 2.0,
+            (random.nextDouble() - 0.5) * 2.0,
+          ),
+          radius: radius,
         ),
-        radius: radius,
-      ));
+      );
     }
   }
 
@@ -158,10 +163,7 @@ class _BubbleChartState extends State<BubbleChart>
         final force = widget.repulsionForce / (distance * 0.01 + 1);
         final angle = atan2(dy, dx);
 
-        bubble.velocity += Offset(
-          cos(angle) * force,
-          sin(angle) * force,
-        );
+        bubble.velocity += Offset(cos(angle) * force, sin(angle) * force);
       }
     }
   }
@@ -178,8 +180,10 @@ class _BubbleChartState extends State<BubbleChart>
 
         bubble.velocity = bubble.velocity * widget.damping;
 
-        final speed = sqrt(bubble.velocity.dx * bubble.velocity.dx +
-            bubble.velocity.dy * bubble.velocity.dy);
+        final speed = sqrt(
+          bubble.velocity.dx * bubble.velocity.dx +
+              bubble.velocity.dy * bubble.velocity.dy,
+        );
         if (speed > 0 && speed < widget.minVelocity) {
           final scale = widget.minVelocity / speed;
           bubble.velocity = bubble.velocity * scale;
@@ -189,26 +193,36 @@ class _BubbleChartState extends State<BubbleChart>
 
         if (bubble.position.dx - bubble.radius < 0) {
           bubble.velocity = Offset(
-              -bubble.velocity.dx * widget.collisionDamping,
-              bubble.velocity.dy);
+            -bubble.velocity.dx * widget.collisionDamping,
+            bubble.velocity.dy,
+          );
           bubble.position = Offset(bubble.radius, bubble.position.dy);
         } else if (bubble.position.dx + bubble.radius > screenSize!.width) {
           bubble.velocity = Offset(
-              -bubble.velocity.dx * widget.collisionDamping,
-              bubble.velocity.dy);
-          bubble.position =
-              Offset(screenSize!.width - bubble.radius, bubble.position.dy);
+            -bubble.velocity.dx * widget.collisionDamping,
+            bubble.velocity.dy,
+          );
+          bubble.position = Offset(
+            screenSize!.width - bubble.radius,
+            bubble.position.dy,
+          );
         }
 
         if (bubble.position.dy - bubble.radius < 0) {
-          bubble.velocity = Offset(bubble.velocity.dx,
-              -bubble.velocity.dy * widget.collisionDamping);
+          bubble.velocity = Offset(
+            bubble.velocity.dx,
+            -bubble.velocity.dy * widget.collisionDamping,
+          );
           bubble.position = Offset(bubble.position.dx, bubble.radius);
         } else if (bubble.position.dy + bubble.radius > screenSize!.height) {
-          bubble.velocity = Offset(bubble.velocity.dx,
-              -bubble.velocity.dy * widget.collisionDamping);
-          bubble.position =
-              Offset(bubble.position.dx, screenSize!.height - bubble.radius);
+          bubble.velocity = Offset(
+            bubble.velocity.dx,
+            -bubble.velocity.dy * widget.collisionDamping,
+          );
+          bubble.position = Offset(
+            bubble.position.dx,
+            screenSize!.height - bubble.radius,
+          );
         }
       }
 
