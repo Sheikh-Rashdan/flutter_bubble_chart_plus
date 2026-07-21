@@ -63,13 +63,12 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 16),
-        )..addListener(() {
-          _updateBubbles();
-        });
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 16),
+    )..addListener(() {
+        _updateBubbles();
+      });
     _controller.repeat();
   }
 
@@ -105,13 +104,11 @@ class _BubbleChartState extends State<BubbleChart>
       } else {
         final normalizedValue =
             (absValue - minAbsValue) / (maxAbsValue - minAbsValue);
-        radius =
-            widget.minRadius +
+        radius = widget.minRadius +
             (normalizedValue * (widget.maxRadius - widget.minRadius));
       }
 
-      final opacity =
-          widget.minOpacity +
+      final opacity = widget.minOpacity +
           (absValue / maxAbsValue * (widget.maxOpacity - widget.minOpacity))
               .clamp(0.0, widget.maxOpacity);
 
