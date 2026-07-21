@@ -6,7 +6,7 @@ import 'bubble_chart_painter.dart';
 class BubbleChart extends StatefulWidget {
   final List<String> names;
   final List<double> values;
-  final List<Color> colors;
+  final List<Color>? colors;
   final bool showValues;
   final Function(String)? onBubbleTap;
   final Color? positiveColor;
@@ -29,8 +29,8 @@ class BubbleChart extends StatefulWidget {
     super.key,
     required this.names,
     required this.values,
-    required this.colors,
-    required this.showValues,
+    this.showValues = true,
+    this.colors,
     this.onBubbleTap,
     this.positiveColor,
     this.negativeColor,
@@ -75,7 +75,9 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void didUpdateWidget(BubbleChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.names != widget.names || oldWidget.values != widget.values) {
+    if (oldWidget.names != widget.names ||
+        oldWidget.values != widget.values ||
+        oldWidget.colors != widget.colors) {
       if (screenSize != null) {
         _generateBubbles(screenSize!);
       }
@@ -115,7 +117,12 @@ class _BubbleChartState extends State<BubbleChart>
       final negativeColor =
           widget.negativeColor ?? Colors.red.withValues(alpha: opacity);
 
-      final color = value > 0 ? positiveColor : negativeColor;
+      final Color color;
+      if (widget.colors != null) {
+        color = value > 0 ? positiveColor : negativeColor;
+      } else {
+        color = widget.colors![i];
+      }
 
       final x = radius + random.nextDouble() * (size.width - radius * 2);
       final y = radius + random.nextDouble() * (size.height - radius * 2);
@@ -276,6 +283,7 @@ class _BubbleChartState extends State<BubbleChart>
             size: Size(constraints.maxWidth, constraints.maxHeight),
             painter: BubbleChartPainter(
               bubbles,
+              showValues: widget.showValues,
               showBorder: widget.showBorder,
               borderWidth: widget.borderWidth,
               nameTextStyle: widget.nameTextStyle,
