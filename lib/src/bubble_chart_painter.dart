@@ -3,6 +3,7 @@ import 'bubble_data.dart';
 
 class BubbleChartPainter extends CustomPainter {
   final List<BubbleData> bubbles;
+  final bool showValues;
   final bool showBorder;
   final double borderWidth;
   final TextStyle? nameTextStyle;
@@ -11,6 +12,7 @@ class BubbleChartPainter extends CustomPainter {
   BubbleChartPainter(
     this.bubbles, {
     this.showBorder = true,
+    required this.showValues,
     this.borderWidth = 2.0,
     this.nameTextStyle,
     this.valueTextStyle,
@@ -27,8 +29,8 @@ class BubbleChartPainter extends CustomPainter {
 
       if (showBorder) {
         final borderColor = bubble.value > 0
-            ? Colors.green.withValues(alpha: 0.8)
-            : Colors.red.withValues(alpha: 0.8);
+            ? bubble.color.withValues(alpha: 0.8)
+            : bubble.color.withValues(alpha: 0.8);
 
         final borderPaint = Paint()
           ..color = borderColor
@@ -50,15 +52,16 @@ class BubbleChartPainter extends CustomPainter {
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            TextSpan(
-              text:
-                  '${bubble.value > 0 ? '+' : ''}${bubble.value.toStringAsFixed(1)}%',
-              style: valueTextStyle ??
-                  TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 12,
-                  ),
-            ),
+            if (showValues)
+              TextSpan(
+                text:
+                    '${bubble.value > 0 ? '+' : ''}${bubble.value.toStringAsFixed(1)}%',
+                style: valueTextStyle ??
+                    TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 12,
+                    ),
+              ),
           ],
         ),
         textAlign: TextAlign.center,
