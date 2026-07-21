@@ -1,6 +1,6 @@
 # Bubble Chart
 
-[![pub package](https://img.shields.io/pub/v/flutter_bubble_chart.svg)](https://pub.dev/packages/flutter_bubble_chart)
+[![pub package](https://img.shields.io/pub/v/flutter_bubble_chart_plus.svg)](https://pub.dev/packages/flutter_bubble_chart_plus)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
@@ -34,7 +34,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_bubble_chart: ^1.0.0
+  flutter_bubble_chart_plus: ^1.0.0
 ```
 
 Then run:
@@ -118,7 +118,9 @@ BubbleChart(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `names` | `List<String>` | **required** | Names displayed on bubbles |
-| `values` | `List<double>` | **required** | Values determining bubble size and color |
+| `values` | `List<double>` | **required** | Values determining bubble size |
+| `colors` | `List<Color>` | `null` | Values determining bubble color |
+| `showValues` | `bool` | `false` | Whether to display values |
 | `onBubbleTap` | `Function(String)?` | `null` | Callback when a bubble is tapped |
 | `positiveColor` | `Color?` | `Colors.green` | Color for positive values |
 | `negativeColor` | `Color?` | `Colors.red` | Color for negative values |
