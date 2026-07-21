@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bubble_chart/flutter_bubble_chart.dart';
+import 'package:flutter_bubble_chart_plus/flutter_bubble_chart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,7 +59,8 @@ class _BubbleChartDemoState extends State<BubbleChartDemo> {
     setState(() {
       values = List.generate(
         names.length,
-        (index) => (DateTime.now().millisecondsSinceEpoch % 1000 / 50.0) -
+        (index) =>
+            (DateTime.now().millisecondsSinceEpoch % 1000 / 50.0) -
             10.0 +
             (index * 2.5),
       );

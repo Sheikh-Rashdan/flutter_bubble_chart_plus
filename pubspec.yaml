@@ -1,9 +1,9 @@
-name: flutter_bubble_chart
-description: A beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
-version: 1.0.2
-# homepage: https://github.com/zengchao928/bubble_chart
-# repository: https://github.com/zengchao928/bubble_chart
-# issue_tracker: https://github.com/zengchao928/bubble_chart/issues
+name: flutter_bubble_chart_plus
+description: A fork that implements custom colors, option to hide values and text-wrapping of a beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
+version: 1.0.0
+homepage: https://github.com/Sheikh-Rashdan/flutter_bubble_chart_plus
+repository: https://github.com/Sheikh-Rashdan/flutter_bubble_chart_plus
+issue_tracker: https://github.com/Sheikh-Rashdan/flutter_bubble_chart_plus/issues
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
