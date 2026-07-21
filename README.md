@@ -34,7 +34,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_bubble_chart: ^1.0.0
+  flutter_bubble_chart_plus: ^1.0.0
 ```
 
 Then run:
@@ -118,7 +118,9 @@ BubbleChart(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `names` | `List<String>` | **required** | Names displayed on bubbles |
-| `values` | `List<double>` | **required** | Values determining bubble size and color |
+| `values` | `List<double>` | **required** | Values determining bubble size |
+| `colors` | `List<Color>` | `null` | Values determining bubble color |
+| `showValues` | `bool` | `false` | Whether to display values |
 | `onBubbleTap` | `Function(String)?` | `null` | Callback when a bubble is tapped |
 | `positiveColor` | `Color?` | `Colors.green` | Color for positive values |
 | `negativeColor` | `Color?` | `Colors.red` | Color for negative values |

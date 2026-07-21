@@ -1,5 +1,5 @@
 name: flutter_bubble_chart_plus_example
-description: Example app for flutter_bubble_chart_plus package
+description: Example app for flutter_bubble_chart package
 publish_to: 'none'
 version: 1.0.0
 
@@ -7,7 +7,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  flutter_bubble_chart_plus:
+  flutter_bubble_chart:
     path: ../
   flutter:
     sdk: flutter
