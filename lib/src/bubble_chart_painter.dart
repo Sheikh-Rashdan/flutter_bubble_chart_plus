@@ -44,9 +44,8 @@ class BubbleChartPainter extends CustomPainter {
         text: TextSpan(
           children: [
             TextSpan(
-              text: '${bubble.name}',
-              style:
-                  nameTextStyle ??
+              text: bubble.name,
+              style: nameTextStyle ??
                   const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
@@ -57,8 +56,7 @@ class BubbleChartPainter extends CustomPainter {
               TextSpan(
                 text:
                     '\n${bubble.value > 0 ? '+' : ''}${bubble.value.toStringAsFixed(1)}%',
-                style:
-                    valueTextStyle ??
+                style: valueTextStyle ??
                     TextStyle(
                       color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 12,
