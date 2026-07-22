@@ -138,9 +138,9 @@ BubbleChart(
 | `randomForce`      | `double`            | `0.05`           | Random force applied to bubbles  |
 | `repulsionForce`   | `double`            | `15.0`           | Force when tapping empty space   |
 | `animateBubble`    | `bool`              | `true`           | Whether to animate size and color|
-| `animationDuration`| `Duration`          | `Duration(milliseconds: 300)` | The duration of the animation    |
+| `animationDuration`| `Duration`          | `Duration(milliseconds: 300)` | The duration of the animation            |
 | `animationCurve`   | `Curve`             | `Curves.easeInOut` | The curve the animation follows  |
-| `widget`           | `Widget?`           | `null`           | The curve the animation follows  |
+| `widgetBuilder`    | `Widget Function(String, double, Color)?` | `null`           | A function to build a widget instead of displaying name |
 
 ## How It Works
 

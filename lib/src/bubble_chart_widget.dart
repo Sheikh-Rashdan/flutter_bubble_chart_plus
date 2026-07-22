@@ -27,7 +27,7 @@ class BubbleChart extends StatefulWidget {
   final bool animateBubble;
   final Duration animationDuration;
   final Curve animationCurve;
-  final Widget? widget;
+  final Widget Function(String name, double value, Color color)? widgetBuilder;
 
   const BubbleChart(
       {super.key,
@@ -54,7 +54,7 @@ class BubbleChart extends StatefulWidget {
       this.animateBubble = true,
       this.animationDuration = const Duration(milliseconds: 300),
       this.animationCurve = Curves.easeInOut,
-      this.widget});
+      this.widgetBuilder});
 
   @override
   State<BubbleChart> createState() => _BubbleChartState();
@@ -380,7 +380,7 @@ class _BubbleChartState extends State<BubbleChart>
               borderWidth: widget.borderWidth,
               nameTextStyle: widget.nameTextStyle,
               valueTextStyle: widget.valueTextStyle,
-              widget: widget.widget,
+              widgetBuilder: widget.widgetBuilder,
             ),
           ),
         );

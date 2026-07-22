@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Added widget parameter to display any widget instead of plain text
+- Added widgetBuilder parameter to display a widget instead of plain text
 
 ## [1.0.5] - 2026-07-22
 

@@ -8,7 +8,7 @@ class BubbleChartPainter extends CustomPainter {
   final double borderWidth;
   final TextStyle? nameTextStyle;
   final TextStyle? valueTextStyle;
-  final Widget? widget;
+  final Widget Function(String name, double value, Color color)? widgetBuilder;
 
   BubbleChartPainter(this.bubbles,
       {this.showBorder = true,
@@ -16,7 +16,7 @@ class BubbleChartPainter extends CustomPainter {
       this.borderWidth = 2.0,
       this.nameTextStyle,
       this.valueTextStyle,
-      this.widget});
+      this.widgetBuilder});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -43,9 +43,11 @@ class BubbleChartPainter extends CustomPainter {
       final textPainter = TextPainter(
         text: TextSpan(
           children: [
-            widget != null
+            widgetBuilder != null
                 ? WidgetSpan(
-                    child: widget!, alignment: PlaceholderAlignment.middle)
+                    child:
+                        widgetBuilder!(bubble.name, bubble.value, bubble.color),
+                    alignment: PlaceholderAlignment.middle)
                 : TextSpan(
                     text: bubble.name,
                     style: nameTextStyle ??
