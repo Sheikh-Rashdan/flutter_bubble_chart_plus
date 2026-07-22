@@ -24,6 +24,9 @@ class BubbleChart extends StatefulWidget {
   final double collisionDamping;
   final double randomForce;
   final double repulsionForce;
+  final bool animateBubble;
+  final Duration animationDuration;
+  final Curve animationCurve;
 
   const BubbleChart({
     super.key,
@@ -47,6 +50,9 @@ class BubbleChart extends StatefulWidget {
     this.collisionDamping = 0.7,
     this.randomForce = 0.05,
     this.repulsionForce = 15.0,
+    this.animateBubble = true,
+    this.animationDuration = const Duration(milliseconds: 300),
+    this.animationCurve = Curves.easeInOut,
   });
 
   @override
@@ -54,8 +60,10 @@ class BubbleChart extends StatefulWidget {
 }
 
 class _BubbleChartState extends State<BubbleChart>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _sizeController;
+  late Animation<double> _sizeAnimation;
   List<BubbleData> bubbles = [];
   final Random random = Random();
   Size? screenSize;
@@ -69,12 +77,36 @@ class _BubbleChartState extends State<BubbleChart>
     )..addListener(() {
         _updateBubbles();
       });
+    _sizeController = AnimationController(
+      vsync: this,
+      duration: widget.animationDuration,
+    )..addListener(() {
+        if (mounted) {
+          setState(() {});
+        }
+      });
+    _sizeAnimation = CurvedAnimation(
+      parent: _sizeController,
+      curve: widget.animationCurve,
+    );
     _controller.repeat();
   }
 
   @override
   void didUpdateWidget(BubbleChart oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.animationDuration != widget.animationDuration) {
+      _sizeController.duration = widget.animationDuration;
+    }
+
+    if (oldWidget.animationCurve != widget.animationCurve) {
+      _sizeAnimation = CurvedAnimation(
+        parent: _sizeController,
+        curve: widget.animationCurve,
+      );
+    }
+
     if (oldWidget.names != widget.names ||
         oldWidget.values != widget.values ||
         oldWidget.colors != widget.colors) {
@@ -91,6 +123,9 @@ class _BubbleChartState extends State<BubbleChart>
     bubbles.clear();
 
     final absValues = widget.values.map((v) => v.abs()).toList();
+    final shouldAnimateBubbleSizes = widget.animateBubble &&
+        widget.animationDuration > Duration.zero &&
+        existingBubbles.isNotEmpty;
     final maxAbsValue = absValues.reduce((a, b) => a > b ? a : b);
     final minAbsValue = absValues.reduce((a, b) => a < b ? a : b);
 
@@ -130,21 +165,33 @@ class _BubbleChartState extends State<BubbleChart>
           radius + random.nextDouble() * (size.width - radius * 2);
       final y = existingBubble?.position.dy ??
           radius + random.nextDouble() * (size.height - radius * 2);
+      final startRadius =
+          shouldAnimateBubbleSizes ? existingBubble?.radius ?? radius : radius;
 
       bubbles.add(
         BubbleData(
           name: name,
           value: value,
-          color: color,
+          color: existingBubble?.color ?? color,
           position: Offset(x, y),
           velocity: existingBubble?.velocity ??
               Offset(
                 (random.nextDouble() - 0.5) * 2.0,
                 (random.nextDouble() - 0.5) * 2.0,
               ),
-          radius: radius,
+          radius: startRadius,
+          targetRadius: radius,
+          startRadius: startRadius,
+          targetColor: color,
+          startColor: existingBubble?.color ?? color,
         ),
       );
+    }
+
+    if (shouldAnimateBubbleSizes) {
+      _sizeController.stop();
+      _sizeController.reset();
+      _sizeController.forward();
     }
   }
 
@@ -275,11 +322,39 @@ class _BubbleChartState extends State<BubbleChart>
   @override
   void dispose() {
     _controller.dispose();
+    _sizeController.dispose();
     super.dispose();
+  }
+
+  void _syncBubbleSizes() {
+    if (!widget.animateBubble || bubbles.isEmpty) {
+      return;
+    }
+
+    if (_sizeController.isAnimating) {
+      final progress = _sizeAnimation.value;
+      for (var bubble in bubbles) {
+        bubble.radius = Tween<double>(
+          begin: bubble.startRadius,
+          end: bubble.targetRadius,
+        ).transform(progress);
+        bubble.color = ColorTween(
+          begin: bubble.startColor,
+          end: bubble.targetColor,
+        ).transform(progress)!;
+      }
+    } else {
+      for (var bubble in bubbles) {
+        bubble.radius = bubble.targetRadius;
+        bubble.color = bubble.targetColor;
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _syncBubbleSizes();
+
     return LayoutBuilder(
       builder: (context, constraints) {
         if (screenSize == null ||
