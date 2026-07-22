@@ -3,15 +3,15 @@
 [![pub package](https://img.shields.io/pub/v/flutter_bubble_chart_plus.svg)](https://pub.dev/packages/flutter_bubble_chart_plus)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A fork that implements custom colors, option to hide values and text-wrapping of a beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
+A fork that implements custom colors, option to hide values and text-wrapping along with animations of a beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
 
 ## Features
 
-✨ **Physics-Based Animation** - Smooth, realistic bubble movements with collision detection  
-🎨 **Highly Customizable** - Control colors, sizes, opacity, borders, and text styles  
-👆 **Interactive** - Tap bubbles to trigger callbacks, tap empty space to push bubbles away  
-📊 **Data Visualization** - Perfect for market heat maps, statistics, and dynamic data  
-⚡ **Performance Optimized** - Efficient rendering with CustomPainter  
+✨ **Physics-Based Animation** - Smooth, realistic bubble movements with collision detection
+🎨 **Highly Customizable** - Control colors, sizes, opacity, borders, and text styles
+👆 **Interactive** - Tap bubbles to trigger callbacks, tap empty space to push bubbles away
+📊 **Data Visualization** - Perfect for market heat maps, statistics, and dynamic data
+⚡ **Performance Optimized** - Efficient rendering with CustomPainter
 🎯 **Easy to Use** - Simple API with sensible defaults
 
 ## Demo
@@ -115,28 +115,31 @@ BubbleChart(
 
 ## Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `names` | `List<String>` | **required** | Names displayed on bubbles |
-| `values` | `List<double>` | **required** | Values determining bubble size |
-| `colors` | `List<Color>` | `null` | Values determining bubble color |
-| `showValues` | `bool` | `false` | Whether to display values |
-| `onBubbleTap` | `Function(String)?` | `null` | Callback when a bubble is tapped |
-| `positiveColor` | `Color?` | `Colors.green` | Color for positive values |
-| `negativeColor` | `Color?` | `Colors.red` | Color for negative values |
-| `minRadius` | `double` | `30.0` | Minimum bubble radius |
-| `maxRadius` | `double` | `55.0` | Maximum bubble radius |
-| `minOpacity` | `double` | `0.25` | Minimum bubble opacity |
-| `maxOpacity` | `double` | `0.6` | Maximum bubble opacity |
-| `showBorder` | `bool` | `true` | Whether to show bubble borders |
-| `borderWidth` | `double` | `2.0` | Width of bubble borders |
-| `nameTextStyle` | `TextStyle?` | `null` | Style for bubble names |
-| `valueTextStyle` | `TextStyle?` | `null` | Style for bubble values |
-| `damping` | `double` | `0.98` | Velocity damping factor (0-1) |
-| `minVelocity` | `double` | `0.3` | Minimum velocity threshold |
-| `collisionDamping` | `double` | `0.7` | Energy loss on collision (0-1) |
-| `randomForce` | `double` | `0.05` | Random force applied to bubbles |
-| `repulsionForce` | `double` | `15.0` | Force when tapping empty space |
+| Parameter            | Type                  | Default            | Description                      |
+| -------------------- | --------------------- | ------------------ | -------------------------------- |
+| `names`            | `List<String>`      | **required**     | Names displayed on bubbles       |
+| `values`           | `List<double>`      | **required**     | Values determining bubble size   |
+| `colors`           | `List<Color>`       | `null`           | Values determining bubble color  |
+| `showValues`       | `bool`              | `false`          | Whether to display values        |
+| `onBubbleTap`      | `Function(String)?` | `null`           | Callback when a bubble is tapped |
+| `positiveColor`    | `Color?`            | `Colors.green`   | Color for positive values        |
+| `negativeColor`    | `Color?`            | `Colors.red`     | Color for negative values        |
+| `minRadius`        | `double`            | `30.0`           | Minimum bubble radius            |
+| `maxRadius`        | `double`            | `55.0`           | Maximum bubble radius            |
+| `minOpacity`       | `double`            | `0.25`           | Minimum bubble opacity           |
+| `maxOpacity`       | `double`            | `0.6`            | Maximum bubble opacity           |
+| `showBorder`       | `bool`              | `true`           | Whether to show bubble borders   |
+| `borderWidth`      | `double`            | `2.0`            | Width of bubble borders          |
+| `nameTextStyle`    | `TextStyle?`        | `null`           | Style for bubble names           |
+| `valueTextStyle`   | `TextStyle?`        | `null`           | Style for bubble values          |
+| `damping`          | `double`            | `0.98`           | Velocity damping factor (0-1)    |
+| `minVelocity`      | `double`            | `0.3`            | Minimum velocity threshold       |
+| `collisionDamping` | `double`            | `0.7`            | Energy loss on collision (0-1)   |
+| `randomForce`      | `double`            | `0.05`           | Random force applied to bubbles  |
+| `repulsionForce`   | `double`            | `15.0`           | Force when tapping empty space   |
+| `animateBubble`    | `bool`              | `15.0`           | Whether to animate size and color|
+| `animationDuration`| `Duration`          | `15.0`           | The duration of the animation    |
+| `animationCurve`   | `Curve`             | `15.0`           | The curve the animation follows  |
 
 ## How It Works
 
