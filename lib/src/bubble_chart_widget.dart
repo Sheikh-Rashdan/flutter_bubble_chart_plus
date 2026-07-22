@@ -87,6 +87,7 @@ class _BubbleChartState extends State<BubbleChart>
   void _generateBubbles(Size size) {
     if (widget.names.isEmpty || widget.values.isEmpty) return;
 
+    final existingBubbles = {for (var bubble in bubbles) bubble.name: bubble};
     bubbles.clear();
 
     final absValues = widget.values.map((v) => v.abs()).toList();
@@ -124,8 +125,11 @@ class _BubbleChartState extends State<BubbleChart>
         color = widget.colors![i];
       }
 
-      final x = radius + random.nextDouble() * (size.width - radius * 2);
-      final y = radius + random.nextDouble() * (size.height - radius * 2);
+      final existingBubble = existingBubbles[name];
+      final x = existingBubble?.position.dx ??
+          radius + random.nextDouble() * (size.width - radius * 2);
+      final y = existingBubble?.position.dy ??
+          radius + random.nextDouble() * (size.height - radius * 2);
 
       bubbles.add(
         BubbleData(
@@ -133,10 +137,11 @@ class _BubbleChartState extends State<BubbleChart>
           value: value,
           color: color,
           position: Offset(x, y),
-          velocity: Offset(
-            (random.nextDouble() - 0.5) * 2.0,
-            (random.nextDouble() - 0.5) * 2.0,
-          ),
+          velocity: existingBubble?.velocity ??
+              Offset(
+                (random.nextDouble() - 0.5) * 2.0,
+                (random.nextDouble() - 0.5) * 2.0,
+              ),
           radius: radius,
         ),
       );
