@@ -15,6 +15,7 @@ void main() {
         .painter as BubbleChartPainter;
     final initialRadius = initialPainter.bubbles[1].radius;
 
+    // ignore: invalid_use_of_protected_member
     tester.state<_ChartHostState>(find.byType(_ChartHost)).setState(() {
       tester.state<_ChartHostState>(find.byType(_ChartHost)).values = const [
         1,
