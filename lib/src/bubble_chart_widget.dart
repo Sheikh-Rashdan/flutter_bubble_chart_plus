@@ -27,33 +27,34 @@ class BubbleChart extends StatefulWidget {
   final bool animateBubble;
   final Duration animationDuration;
   final Curve animationCurve;
+  final Widget? widget;
 
-  const BubbleChart({
-    super.key,
-    required this.names,
-    required this.values,
-    this.showValues = true,
-    this.colors,
-    this.onBubbleTap,
-    this.positiveColor,
-    this.negativeColor,
-    this.minRadius = 30.0,
-    this.maxRadius = 55.0,
-    this.minOpacity = 0.25,
-    this.maxOpacity = 0.6,
-    this.showBorder = true,
-    this.borderWidth = 2.0,
-    this.nameTextStyle,
-    this.valueTextStyle,
-    this.damping = 0.98,
-    this.minVelocity = 0.3,
-    this.collisionDamping = 0.7,
-    this.randomForce = 0.05,
-    this.repulsionForce = 15.0,
-    this.animateBubble = true,
-    this.animationDuration = const Duration(milliseconds: 300),
-    this.animationCurve = Curves.easeInOut,
-  });
+  const BubbleChart(
+      {super.key,
+      required this.names,
+      required this.values,
+      this.showValues = true,
+      this.colors,
+      this.onBubbleTap,
+      this.positiveColor,
+      this.negativeColor,
+      this.minRadius = 30.0,
+      this.maxRadius = 55.0,
+      this.minOpacity = 0.25,
+      this.maxOpacity = 0.6,
+      this.showBorder = true,
+      this.borderWidth = 2.0,
+      this.nameTextStyle,
+      this.valueTextStyle,
+      this.damping = 0.98,
+      this.minVelocity = 0.3,
+      this.collisionDamping = 0.7,
+      this.randomForce = 0.05,
+      this.repulsionForce = 15.0,
+      this.animateBubble = true,
+      this.animationDuration = const Duration(milliseconds: 300),
+      this.animationCurve = Curves.easeInOut,
+      this.widget});
 
   @override
   State<BubbleChart> createState() => _BubbleChartState();
@@ -379,6 +380,7 @@ class _BubbleChartState extends State<BubbleChart>
               borderWidth: widget.borderWidth,
               nameTextStyle: widget.nameTextStyle,
               valueTextStyle: widget.valueTextStyle,
+              widget: widget.widget,
             ),
           ),
         );

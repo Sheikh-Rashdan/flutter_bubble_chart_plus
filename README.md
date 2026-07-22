@@ -137,9 +137,10 @@ BubbleChart(
 | `collisionDamping` | `double`            | `0.7`            | Energy loss on collision (0-1)   |
 | `randomForce`      | `double`            | `0.05`           | Random force applied to bubbles  |
 | `repulsionForce`   | `double`            | `15.0`           | Force when tapping empty space   |
-| `animateBubble`    | `bool`              | `15.0`           | Whether to animate size and color|
-| `animationDuration`| `Duration`          | `15.0`           | The duration of the animation    |
-| `animationCurve`   | `Curve`             | `15.0`           | The curve the animation follows  |
+| `animateBubble`    | `bool`              | `true`           | Whether to animate size and color|
+| `animationDuration`| `Duration`          | `Duration(milliseconds: 300)` | The duration of the animation    |
+| `animationCurve`   | `Curve`             | `Curves.easeInOut` | The curve the animation follows  |
+| `widget`           | `Widget?`           | `null`           | The curve the animation follows  |
 
 ## How It Works
 
