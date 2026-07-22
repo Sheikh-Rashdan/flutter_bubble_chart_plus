@@ -12,6 +12,11 @@ A beautiful and interactive bubble chart widget for Flutter with physics-based a
 👆 **Interactive** - Tap bubbles to trigger callbacks, tap empty space to push bubbles away
 📊 **Data Visualization** - Perfect for market heat maps, statistics, and dynamic data
 ⚡ **Performance Optimized** - Efficient rendering with CustomPainter
+✨ **Physics-Based Animation** - Smooth, realistic bubble movements with collision detection
+🎨 **Highly Customizable** - Control colors, sizes, opacity, borders, and text styles
+👆 **Interactive** - Tap bubbles to trigger callbacks, tap empty space to push bubbles away
+📊 **Data Visualization** - Perfect for market heat maps, statistics, and dynamic data
+⚡ **Performance Optimized** - Efficient rendering with CustomPainter
 🎯 **Easy to Use** - Simple API with sensible defaults
 
 ## Demo

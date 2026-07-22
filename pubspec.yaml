@@ -1,6 +1,6 @@
 name: flutter_bubble_chart
 description: A beautiful and interactive bubble chart widget for Flutter with physics-based animations. Perfect for visualizing market data, statistics, and dynamic datasets.
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/zengchao928/bubble_chart
 repository: https://github.com/zengchao928/bubble_chart
 issue_tracker: https://github.com/zengchao928/bubble_chart/issues
