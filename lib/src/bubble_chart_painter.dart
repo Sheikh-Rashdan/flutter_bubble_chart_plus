@@ -40,23 +40,22 @@ class BubbleChartPainter extends CustomPainter {
         canvas.drawCircle(bubble.position, bubble.radius, borderPaint);
       }
 
+      if (widgetBuilder != null) {
+        continue;
+      }
+
       final textPainter = TextPainter(
         text: TextSpan(
           children: [
-            widgetBuilder != null
-                ? WidgetSpan(
-                    child:
-                        widgetBuilder!(bubble.name, bubble.value, bubble.color),
-                    alignment: PlaceholderAlignment.middle)
-                : TextSpan(
-                    text: bubble.name,
-                    style: nameTextStyle ??
-                        const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
+            TextSpan(
+              text: bubble.name,
+              style: nameTextStyle ??
+                  const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
                   ),
+            ),
             if (showValues)
               TextSpan(
                 text:

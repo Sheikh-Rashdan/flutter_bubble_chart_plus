@@ -371,17 +371,39 @@ class _BubbleChartState extends State<BubbleChart>
           onTapDown: (details) {
             _handleTap(details.localPosition);
           },
-          child: CustomPaint(
-            size: Size(constraints.maxWidth, constraints.maxHeight),
-            painter: BubbleChartPainter(
-              bubbles,
-              showValues: widget.showValues,
-              showBorder: widget.showBorder,
-              borderWidth: widget.borderWidth,
-              nameTextStyle: widget.nameTextStyle,
-              valueTextStyle: widget.valueTextStyle,
-              widgetBuilder: widget.widgetBuilder,
-            ),
+          child: Stack(
+            children: [
+              CustomPaint(
+                size: Size(constraints.maxWidth, constraints.maxHeight),
+                painter: BubbleChartPainter(
+                  bubbles,
+                  showValues: widget.showValues,
+                  showBorder: widget.showBorder,
+                  borderWidth: widget.borderWidth,
+                  nameTextStyle: widget.nameTextStyle,
+                  valueTextStyle: widget.valueTextStyle,
+                  widgetBuilder: widget.widgetBuilder,
+                ),
+              ),
+              if (widget.widgetBuilder != null)
+                ...bubbles.map((bubble) {
+                  final widgetContent = widget.widgetBuilder!(
+                    bubble.name,
+                    bubble.value,
+                    bubble.color,
+                  );
+
+                  return Positioned(
+                    left: bubble.position.dx - bubble.radius / 2,
+                    top: bubble.position.dy - bubble.radius / 2,
+                    child: SizedBox(
+                      width: bubble.radius,
+                      height: bubble.radius,
+                      child: Center(child: widgetContent),
+                    ),
+                  );
+                }),
+            ],
           ),
         );
       },

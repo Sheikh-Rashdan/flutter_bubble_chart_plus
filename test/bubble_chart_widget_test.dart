@@ -37,6 +37,28 @@ void main() {
     expect(updatedRadius, greaterThan(initialRadius));
     expect(updatedRadius, lessThanOrEqualTo(targetRadius));
   });
+
+  testWidgets('widgetBuilder renders custom content for each bubble',
+      (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: BubbleChart(
+            names: const ['A', 'B'],
+            values: const [1.0, 2.0],
+            widgetBuilder: (name, value, color) => Text(
+              'custom-$name-${value.toStringAsFixed(1)}',
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('custom-A-1.0'), findsOneWidget);
+    expect(find.text('custom-B-2.0'), findsOneWidget);
+  });
 }
 
 class _ChartHost extends StatefulWidget {
