@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-07-2
+
+### Changed
+- Implemented restoration of position on rebuild
+
+## [1.0.3] - 2026-07-2
+
+### Changed
+- Added ability to customize color for each bubble
+- Added ability to hide value text
+- Implemented text wrapping to a maximum of 3 lines
+- Edited README to include new parameters
+
 ## [1.0.2] - 2025-09-30
 
 ### Changed
