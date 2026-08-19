@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-08-19
+
+### Changed
+
+- Reimplemented widgetBuilder
+
 ## [1.0.7] - 2026-07-23
 
 ### Changed

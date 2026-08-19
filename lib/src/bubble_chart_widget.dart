@@ -382,7 +382,7 @@ class _BubbleChartState extends State<BubbleChart>
                   borderWidth: widget.borderWidth,
                   nameTextStyle: widget.nameTextStyle,
                   valueTextStyle: widget.valueTextStyle,
-                  widgetBuilder: widget.widgetBuilder,
+                  hasWidgetBuilder: widget.widgetBuilder != null,
                 ),
               ),
               if (widget.widgetBuilder != null)
@@ -394,11 +394,11 @@ class _BubbleChartState extends State<BubbleChart>
                   );
 
                   return Positioned(
-                    left: bubble.position.dx - bubble.radius / 2,
-                    top: bubble.position.dy - bubble.radius / 2,
+                    left: bubble.position.dx - bubble.radius,
+                    top: bubble.position.dy - bubble.radius,
                     child: SizedBox(
-                      width: bubble.radius,
-                      height: bubble.radius,
+                      width: bubble.radius * 2,
+                      height: bubble.radius * 2,
                       child: Center(child: widgetContent),
                     ),
                   );

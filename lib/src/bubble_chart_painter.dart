@@ -8,7 +8,7 @@ class BubbleChartPainter extends CustomPainter {
   final double borderWidth;
   final TextStyle? nameTextStyle;
   final TextStyle? valueTextStyle;
-  final Widget Function(String name, double value, Color color)? widgetBuilder;
+  final bool hasWidgetBuilder;
 
   BubbleChartPainter(this.bubbles,
       {this.showBorder = true,
@@ -16,7 +16,7 @@ class BubbleChartPainter extends CustomPainter {
       this.borderWidth = 2.0,
       this.nameTextStyle,
       this.valueTextStyle,
-      this.widgetBuilder});
+      this.hasWidgetBuilder = false});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -40,7 +40,7 @@ class BubbleChartPainter extends CustomPainter {
         canvas.drawCircle(bubble.position, bubble.radius, borderPaint);
       }
 
-      if (widgetBuilder != null) {
+      if (hasWidgetBuilder) {
         continue;
       }
 
