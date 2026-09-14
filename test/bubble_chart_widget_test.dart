@@ -58,6 +58,11 @@ void main() {
 
     expect(find.text('custom-A-1.0'), findsOneWidget);
     expect(find.text('custom-B-2.0'), findsOneWidget);
+
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('custom-A-1.0'), findsOneWidget);
+    expect(find.text('custom-B-2.0'), findsOneWidget);
   });
 
   testWidgets('clears the last bubble when names and values become empty',
@@ -82,7 +87,34 @@ void main() {
         .clear();
     await tester.pump();
 
+    expect(painter().bubbles, hasLength(1));
+    await tester.pump(const Duration(milliseconds: 400));
+
     expect(painter().bubbles, isEmpty);
+  });
+
+  testWidgets('new bubbles grow from zero', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: _SingleBubbleHost()),
+      ),
+    );
+    await tester.pump();
+
+    tester
+        .state<_SingleBubbleHostState>(find.byType(_SingleBubbleHost))
+        .addBubble();
+    await tester.pump();
+
+    final painter = tester
+        .widgetList<CustomPaint>(find.byType(CustomPaint))
+        .where((widget) => widget.painter is BubbleChartPainter)
+        .first
+        .painter as BubbleChartPainter;
+    final newBubble =
+        painter.bubbles.singleWhere((bubble) => bubble.name == 'B');
+
+    expect(newBubble.radius, lessThan(_computeRadius(2, const [1, 2], 30, 55)));
   });
 }
 
@@ -117,6 +149,13 @@ class _SingleBubbleHost extends StatefulWidget {
 class _SingleBubbleHostState extends State<_SingleBubbleHost> {
   List<String> names = const ['A'];
   List<double> values = const [1];
+
+  void addBubble() {
+    setState(() {
+      names = const ['A', 'B'];
+      values = const [1, 2];
+    });
+  }
 
   void clear() {
     setState(() {

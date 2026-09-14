@@ -11,6 +11,7 @@ class BubbleData {
   double startRadius;
   Color targetColor;
   Color startColor;
+  double contentScale;
 
   BubbleData({
     required this.name,
@@ -23,6 +24,7 @@ class BubbleData {
     double? startRadius,
     Color? targetColor,
     Color? startColor,
+    this.contentScale = 1.0,
   })  : targetRadius = targetRadius ?? radius,
         startRadius = startRadius ?? radius,
         targetColor = targetColor ?? color,

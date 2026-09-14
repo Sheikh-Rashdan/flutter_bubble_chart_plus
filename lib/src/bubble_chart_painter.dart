@@ -21,6 +21,10 @@ class BubbleChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (var bubble in bubbles) {
+      if (bubble.radius <= 0) {
+        continue;
+      }
+
       final paint = Paint()
         ..color = bubble.color
         ..style = PaintingStyle.fill;
@@ -74,13 +78,14 @@ class BubbleChartPainter extends CustomPainter {
       );
 
       textPainter.layout(maxWidth: bubble.radius * 1.8);
+      canvas.save();
+      canvas.translate(bubble.position.dx, bubble.position.dy);
+      canvas.scale(bubble.contentScale);
       textPainter.paint(
         canvas,
-        Offset(
-          bubble.position.dx - textPainter.width / 2,
-          bubble.position.dy - textPainter.height / 2,
-        ),
+        Offset(-textPainter.width / 2, -textPainter.height / 2),
       );
+      canvas.restore();
     }
   }
 

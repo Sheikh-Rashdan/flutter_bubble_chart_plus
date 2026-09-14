@@ -86,6 +86,13 @@ class _BubbleChartState extends State<BubbleChart>
           setState(() {});
         }
       });
+    _sizeController.addStatusListener((status) {
+      if (status == AnimationStatus.completed && mounted) {
+        setState(() {
+          bubbles.removeWhere((bubble) => bubble.targetRadius <= 0);
+        });
+      }
+    });
     _sizeAnimation = CurvedAnimation(
       parent: _sizeController,
       curve: widget.animationCurve,
@@ -119,14 +126,31 @@ class _BubbleChartState extends State<BubbleChart>
 
   void _generateBubbles(Size size) {
     final existingBubbles = {for (var bubble in bubbles) bubble.name: bubble};
-    bubbles.clear();
+    final activeBubbles = <BubbleData>[];
+    final shouldAnimateBubbleSizes =
+        widget.animateBubble && widget.animationDuration > Duration.zero;
 
-    if (widget.names.isEmpty || widget.values.isEmpty) return;
+    final itemCount = min(widget.names.length, widget.values.length);
+    if (itemCount == 0) {
+      if (shouldAnimateBubbleSizes && existingBubbles.isNotEmpty) {
+        for (final bubble in existingBubbles.values) {
+          bubble.startRadius = bubble.radius;
+          bubble.targetRadius = 0;
+          bubble.contentScale = 1.0;
+          activeBubbles.add(bubble);
+        }
+        bubbles = activeBubbles;
+        _sizeController
+          ..stop()
+          ..reset()
+          ..forward();
+      } else {
+        bubbles.clear();
+      }
+      return;
+    }
 
     final absValues = widget.values.map((v) => v.abs()).toList();
-    final shouldAnimateBubbleSizes = widget.animateBubble &&
-        widget.animationDuration > Duration.zero &&
-        existingBubbles.isNotEmpty;
     final maxAbsValue = absValues.reduce((a, b) => a > b ? a : b);
     final minAbsValue = absValues.reduce((a, b) => a < b ? a : b);
 
@@ -167,9 +191,9 @@ class _BubbleChartState extends State<BubbleChart>
       final y = existingBubble?.position.dy ??
           radius + random.nextDouble() * (size.height - radius * 2);
       final startRadius =
-          shouldAnimateBubbleSizes ? existingBubble?.radius ?? radius : radius;
+          shouldAnimateBubbleSizes ? existingBubble?.radius ?? 0 : radius;
 
-      bubbles.add(
+      activeBubbles.add(
         BubbleData(
           name: name,
           value: value,
@@ -185,9 +209,26 @@ class _BubbleChartState extends State<BubbleChart>
           startRadius: startRadius,
           targetColor: color,
           startColor: existingBubble?.color ?? color,
+          contentScale: shouldAnimateBubbleSizes && existingBubble == null
+              ? 0
+              : existingBubble?.contentScale ?? 1.0,
         ),
       );
     }
+
+    if (shouldAnimateBubbleSizes) {
+      for (final bubble in existingBubbles.values) {
+        if (!activeBubbles
+            .any((activeBubble) => activeBubble.name == bubble.name)) {
+          bubble.startRadius = bubble.radius;
+          bubble.targetRadius = 0;
+          bubble.contentScale = 1.0;
+          activeBubbles.add(bubble);
+        }
+      }
+    }
+
+    bubbles = activeBubbles;
 
     if (shouldAnimateBubbleSizes) {
       _sizeController.stop();
@@ -343,11 +384,17 @@ class _BubbleChartState extends State<BubbleChart>
           begin: bubble.startColor,
           end: bubble.targetColor,
         ).transform(progress)!;
+        bubble.contentScale = bubble.targetRadius <= 0
+            ? (bubble.startRadius == 0 ? 0 : bubble.radius / bubble.startRadius)
+            : (bubble.startRadius < bubble.targetRadius
+                ? bubble.radius / bubble.targetRadius
+                : 1.0);
       }
     } else {
       for (var bubble in bubbles) {
         bubble.radius = bubble.targetRadius;
         bubble.color = bubble.targetColor;
+        bubble.contentScale = 1.0;
       }
     }
   }
@@ -392,14 +439,22 @@ class _BubbleChartState extends State<BubbleChart>
                     bubble.value,
                     bubble.color,
                   );
+                  final layoutRadius = bubble.targetRadius > 0
+                      ? bubble.targetRadius
+                      : bubble.startRadius;
 
                   return Positioned(
-                    left: bubble.position.dx - bubble.radius,
-                    top: bubble.position.dy - bubble.radius,
+                    left: bubble.position.dx - layoutRadius,
+                    top: bubble.position.dy - layoutRadius,
                     child: SizedBox(
-                      width: bubble.radius * 2,
-                      height: bubble.radius * 2,
-                      child: Center(child: widgetContent),
+                      width: layoutRadius * 2,
+                      height: layoutRadius * 2,
+                      child: Center(
+                        child: Transform.scale(
+                          scale: bubble.contentScale,
+                          child: widgetContent,
+                        ),
+                      ),
                     ),
                   );
                 }),

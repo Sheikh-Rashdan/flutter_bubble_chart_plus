@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-09-14
+
+### Added
+
+- Added animation to content and bubble radius when bubble appears/disappears
+
 ## [1.1.1] - 2026-09-14
 
 ### Bugfix
