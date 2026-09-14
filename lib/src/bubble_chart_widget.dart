@@ -118,10 +118,10 @@ class _BubbleChartState extends State<BubbleChart>
   }
 
   void _generateBubbles(Size size) {
-    if (widget.names.isEmpty || widget.values.isEmpty) return;
-
     final existingBubbles = {for (var bubble in bubbles) bubble.name: bubble};
     bubbles.clear();
+
+    if (widget.names.isEmpty || widget.values.isEmpty) return;
 
     final absValues = widget.values.map((v) => v.abs()).toList();
     final shouldAnimateBubbleSizes = widget.animateBubble &&

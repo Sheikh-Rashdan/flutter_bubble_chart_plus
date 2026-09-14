@@ -59,6 +59,31 @@ void main() {
     expect(find.text('custom-A-1.0'), findsOneWidget);
     expect(find.text('custom-B-2.0'), findsOneWidget);
   });
+
+  testWidgets('clears the last bubble when names and values become empty',
+      (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: _SingleBubbleHost()),
+      ),
+    );
+    await tester.pump();
+
+    BubbleChartPainter painter() => tester
+        .widgetList<CustomPaint>(find.byType(CustomPaint))
+        .where((widget) => widget.painter is BubbleChartPainter)
+        .first
+        .painter as BubbleChartPainter;
+
+    expect(painter().bubbles, hasLength(1));
+
+    tester
+        .state<_SingleBubbleHostState>(find.byType(_SingleBubbleHost))
+        .clear();
+    await tester.pump();
+
+    expect(painter().bubbles, isEmpty);
+  });
 }
 
 class _ChartHost extends StatefulWidget {
@@ -79,6 +104,30 @@ class _ChartHostState extends State<_ChartHost> {
       animationDuration: const Duration(milliseconds: 300),
       animationCurve: Curves.easeOut,
     );
+  }
+}
+
+class _SingleBubbleHost extends StatefulWidget {
+  const _SingleBubbleHost();
+
+  @override
+  State<_SingleBubbleHost> createState() => _SingleBubbleHostState();
+}
+
+class _SingleBubbleHostState extends State<_SingleBubbleHost> {
+  List<String> names = const ['A'];
+  List<double> values = const [1];
+
+  void clear() {
+    setState(() {
+      names = const [];
+      values = const [];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BubbleChart(names: names, values: values);
   }
 }
 
