@@ -125,6 +125,7 @@ class _BubbleChartState extends State<BubbleChart>
   }
 
   void _generateBubbles(Size size) {
+    _syncBubbleSizes();
     final existingBubbles = {for (var bubble in bubbles) bubble.name: bubble};
     final activeBubbles = <BubbleData>[];
     final shouldAnimateBubbleSizes =
@@ -399,9 +400,27 @@ class _BubbleChartState extends State<BubbleChart>
     }
   }
 
+  void _constrainBubblePositions() {
+    if (screenSize == null) {
+      return;
+    }
+
+    for (final bubble in bubbles) {
+      final horizontalRadius = min(bubble.radius, screenSize!.width / 2);
+      final verticalRadius = min(bubble.radius, screenSize!.height / 2);
+      bubble.position = Offset(
+        bubble.position.dx
+            .clamp(horizontalRadius, screenSize!.width - horizontalRadius),
+        bubble.position.dy
+            .clamp(verticalRadius, screenSize!.height - verticalRadius),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _syncBubbleSizes();
+    _constrainBubblePositions();
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -439,9 +458,10 @@ class _BubbleChartState extends State<BubbleChart>
                     bubble.value,
                     bubble.color,
                   );
-                  final layoutRadius = bubble.targetRadius > 0
-                      ? bubble.targetRadius
-                      : bubble.startRadius;
+                  final layoutRadius = max(
+                    bubble.radius,
+                    max(bubble.startRadius, bubble.targetRadius),
+                  );
 
                   return Positioned(
                     left: bubble.position.dx - layoutRadius,
@@ -449,10 +469,13 @@ class _BubbleChartState extends State<BubbleChart>
                     child: SizedBox(
                       width: layoutRadius * 2,
                       height: layoutRadius * 2,
-                      child: Center(
-                        child: Transform.scale(
-                          scale: bubble.contentScale,
-                          child: widgetContent,
+                      child: ClipOval(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Transform.scale(
+                            scale: bubble.contentScale,
+                            child: widgetContent,
+                          ),
                         ),
                       ),
                     ),

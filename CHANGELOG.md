@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2026-09-14
+
+### Bugfix
+
+- Fixed a bug where the widget builder content could overflow if the size of the bubbles changed before the animation finished
+
 ## [1.1.2] - 2026-09-14
 
 ### Added

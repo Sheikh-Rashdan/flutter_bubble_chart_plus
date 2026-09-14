@@ -116,6 +116,53 @@ void main() {
 
     expect(newBubble.radius, lessThan(_computeRadius(2, const [1, 2], 30, 55)));
   });
+
+  testWidgets('value updates during size animation remain stable',
+      (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: _RapidUpdateHost()),
+      ),
+    );
+    await tester.pump();
+
+    final host = tester.state<_RapidUpdateHostState>(
+      find.byType(_RapidUpdateHost),
+    );
+    host.updateValues(const [1, 8, 10]);
+    await tester.pump(const Duration(milliseconds: 75));
+    host.updateValues(const [10, 1, 5]);
+    await tester.pump(const Duration(milliseconds: 75));
+    host.updateValues(const [3, 9, 1]);
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('custom-A'), findsOneWidget);
+    expect(find.text('custom-B'), findsOneWidget);
+    expect(find.text('custom-C'), findsOneWidget);
+  });
+
+  testWidgets('custom content remains stable when bubbles cross zero',
+      (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(body: _ZeroRadiusContentHost()),
+      ),
+    );
+    await tester.pump();
+
+    final host = tester.state<_ZeroRadiusContentHostState>(
+      find.byType(_ZeroRadiusContentHost),
+    );
+    host.clear();
+    await tester.pump(const Duration(milliseconds: 50));
+    host.restore();
+    await tester.pump(const Duration(milliseconds: 50));
+    host.clear();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(tester.takeException(), isNull);
+  });
 }
 
 class _ChartHost extends StatefulWidget {
@@ -167,6 +214,74 @@ class _SingleBubbleHostState extends State<_SingleBubbleHost> {
   @override
   Widget build(BuildContext context) {
     return BubbleChart(names: names, values: values);
+  }
+}
+
+class _RapidUpdateHost extends StatefulWidget {
+  const _RapidUpdateHost();
+
+  @override
+  State<_RapidUpdateHost> createState() => _RapidUpdateHostState();
+}
+
+class _RapidUpdateHostState extends State<_RapidUpdateHost> {
+  List<double> values = const [1, 4, 10];
+
+  void updateValues(List<double> nextValues) {
+    setState(() {
+      values = nextValues;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BubbleChart(
+      names: const ['A', 'B', 'C'],
+      values: values,
+      animationDuration: const Duration(milliseconds: 300),
+      widgetBuilder: (name, value, color) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('custom-$name'),
+          ...List.generate(8, (_) => const Text('detail')),
+        ],
+      ),
+    );
+  }
+}
+
+class _ZeroRadiusContentHost extends StatefulWidget {
+  const _ZeroRadiusContentHost();
+
+  @override
+  State<_ZeroRadiusContentHost> createState() => _ZeroRadiusContentHostState();
+}
+
+class _ZeroRadiusContentHostState extends State<_ZeroRadiusContentHost> {
+  List<String> names = const ['A'];
+  List<double> values = const [1];
+
+  void clear() {
+    setState(() {
+      names = const [];
+      values = const [];
+    });
+  }
+
+  void restore() {
+    setState(() {
+      names = const ['A'];
+      values = const [1];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BubbleChart(
+      names: names,
+      values: values,
+      widgetBuilder: (name, value, color) => Text('custom-$name'),
+    );
   }
 }
 
